@@ -859,12 +859,14 @@
         <br>
         <p style="font-size:12px;color:rgba(245,240,228,0.4);">No spam. Unsubscribe anytime.</p>
       </div>
-      <form class="lead-form reveal" action="#" method="post" aria-label="Get free reset guide">
+      <form class="lead-form reveal" id="lead-form" aria-label="Get free reset guide" onsubmit="handleLeadForm(event)">
         <label for="fname" style="display:none">First name</label>
         <input type="text" id="fname" name="fname" placeholder="Your first name" autocomplete="given-name" required/>
         <label for="email" style="display:none">Email address</label>
         <input type="email" id="email" name="email" placeholder="Your email address" autocomplete="email" required/>
-        <button type="submit">Send My Free Guide →</button>
+        <button type="submit" id="lead-submit">Send My Free Guide →</button>
+        <p id="lead-success" style="display:none;color:#C8D5BF;font-size:13px;text-align:center;padding:8px 0;">✦ Check your inbox -- your free guide is on its way.</p>
+        <p id="lead-error" style="display:none;color:#f87171;font-size:12px;text-align:center;padding:4px 0;"></p>
         <p class="lead-note">✦ Delivered instantly to your inbox</p>
       </form>
     </div>
@@ -1049,6 +1051,52 @@
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); q.click(); }
       });
     });
+
+    // MailerLite lead form
+    async function handleLeadForm(e) {
+      e.preventDefault();
+      const btn = document.getElementById('lead-submit');
+      const success = document.getElementById('lead-success');
+      const error = document.getElementById('lead-error');
+      const fname = document.getElementById('fname').value.trim();
+      const email = document.getElementById('email').value.trim();
+
+      btn.textContent = 'Sending...';
+      btn.disabled = true;
+      error.style.display = 'none';
+
+      try {
+        const res = await fetch('https://connect.mailerlite.com/api/subscribers', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiODEzY2NmM2Y2NjEyZmNmNmExOTEyNGE4ODQxMWRiMDc4MDVmZTdjY2FkMTVjNThiN2U3ODhlMDllMDI2ZGJjM2NjNjZlMzBhOGE2YzRkMmYiLCJpYXQiOjE3ODAyOTY0NzEuNDU5NjI3LCJuYmYiOjE3ODAyOTY0NzEuNDU5NjMyLCJleHAiOjQ5MzU5NzAwNzEuNDUzNTg4LCJzdWIiOiIyNDExNjk4Iiwic2NvcGVzIjpbXX0.RwQraWjq-KrySnM4ISu6xH2gE9RvM3tBA47IMwVULxqgJIHT00RxMzWkTd7Vt_biK7oQMAOjFuF0GUZJS9x7GbATHwthXCviZaCjjzLw7v0WxE_MK8VHgtF1sxIpW-vUvqxsIWarM5eVbnoY2HkJp8gBdFXb5hhJ1Foop7PgsXdWymjjadlt7-mNAyfDbz_-hyAy3cuweYrXqu1w9IlEbHFediZA7Hih1hmOWz2hNSX3X8RUWQWOefpsTQeHtElDa0MvbxVRNugb8QIb9iWcZvEuFhTkp7zx2FU3NqopGw-A6DsbeIK-2UekgnUuxhZ8ohh46tE8XR5n0L75zn2O_-4nR--TCNF9BNC_xDm3fAbuNqj9mOk6oaCu9iOA8OkUUOiCyLkwVKMdZ5zUTcsQFMzK3JMmxsQAQ1Yboc8AYNrNWasQNehiESbY70czY8L4G7QdYHl5KNyUA5Er3Kj9aS4LMXt_JwduFSWHEwVLv0RxpIyjLmtaYthswvljtVjlEFXcnVUU2TDp1fS98OmyxaI8cmZ8CoQoZqU4EuS6LjdgC6O86JbQV1YO6x7sewsQ9lvp8lnzu5DPNI7qirZAxccOagKC7liJz9PIHpK_Rlw7NbRqxhIs1u2FxFwymyyiN-52yfmpYJTfSqYNvF27p2JyDmxscD58OJp1IDktHFk'
+          },
+          body: JSON.stringify({
+            email: email,
+            fields: { name: fname },
+            groups: ['189051708829075236']
+          })
+        });
+
+        const data = await res.json();
+
+        if (res.ok || res.status === 200 || res.status === 201) {
+          btn.style.display = 'none';
+          success.style.display = 'block';
+          document.getElementById('fname').style.display = 'none';
+          document.getElementById('email').style.display = 'none';
+          document.querySelector('.lead-note').style.display = 'none';
+        } else {
+          throw new Error(data.message || 'Something went wrong');
+        }
+      } catch (err) {
+        btn.textContent = 'Send My Free Guide →';
+        btn.disabled = false;
+        error.textContent = 'Something went wrong. Please try again.';
+        error.style.display = 'block';
+      }
+    }
 
     // Dynamic year in footer
     document.getElementById('footer-copy').textContent = `\u00A9 ${new Date().getFullYear()} Eric Coste. All rights reserved.`;
