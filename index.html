@@ -1066,17 +1066,10 @@
       error.style.display = 'none';
 
       try {
-        const res = await fetch('https://connect.mailerlite.com/api/subscribers', {
+        const res = await fetch('/api/subscribe', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI0IiwianRpIjoiODEzY2NmM2Y2NjEyZmNmNmExOTEyNGE4ODQxMWRiMDc4MDVmZTdjY2FkMTVjNThiN2U3ODhlMDllMDI2ZGJjM2NjNjZlMzBhOGE2YzRkMmYiLCJpYXQiOjE3ODAyOTY0NzEuNDU5NjI3LCJuYmYiOjE3ODAyOTY0NzEuNDU5NjMyLCJleHAiOjQ5MzU5NzAwNzEuNDUzNTg4LCJzdWIiOiIyNDExNjk4Iiwic2NvcGVzIjpbXX0.RwQraWjq-KrySnM4ISu6xH2gE9RvM3tBA47IMwVULxqgJIHT00RxMzWkTd7Vt_biK7oQMAOjFuF0GUZJS9x7GbATHwthXCviZaCjjzLw7v0WxE_MK8VHgtF1sxIpW-vUvqxsIWarM5eVbnoY2HkJp8gBdFXb5hhJ1Foop7PgsXdWymjjadlt7-mNAyfDbz_-hyAy3cuweYrXqu1w9IlEbHFediZA7Hih1hmOWz2hNSX3X8RUWQWOefpsTQeHtElDa0MvbxVRNugb8QIb9iWcZvEuFhTkp7zx2FU3NqopGw-A6DsbeIK-2UekgnUuxhZ8ohh46tE8XR5n0L75zn2O_-4nR--TCNF9BNC_xDm3fAbuNqj9mOk6oaCu9iOA8OkUUOiCyLkwVKMdZ5zUTcsQFMzK3JMmxsQAQ1Yboc8AYNrNWasQNehiESbY70czY8L4G7QdYHl5KNyUA5Er3Kj9aS4LMXt_JwduFSWHEwVLv0RxpIyjLmtaYthswvljtVjlEFXcnVUU2TDp1fS98OmyxaI8cmZ8CoQoZqU4EuS6LjdgC6O86JbQV1YO6x7sewsQ9lvp8lnzu5DPNI7qirZAxccOagKC7liJz9PIHpK_Rlw7NbRqxhIs1u2FxFwymyyiN-52yfmpYJTfSqYNvF27p2JyDmxscD58OJp1IDktHFk'
-          },
-          body: JSON.stringify({
-            email: email,
-            fields: { name: fname },
-            groups: ['189051708829075236']
-          })
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, name: fname })
         });
 
         const data = await res.json();
