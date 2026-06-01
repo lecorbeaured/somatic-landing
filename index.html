@@ -488,6 +488,49 @@
     .footer-links a { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:rgba(245,240,228,0.5); text-decoration:none; transition:color 0.2s; }
     .footer-links a:hover { color:var(--gold); }
 
+
+    /* STATS BAR */
+    .stat-cell {
+      padding: 32px 24px;
+      text-align: center;
+      border-right: 1px solid rgba(139,158,126,0.15);
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+    }
+    .stat-num {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 52px; font-weight: 300; color: var(--gold); line-height: 1;
+    }
+    .stat-label {
+      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      color: rgba(200,213,191,0.7);
+    }
+
+    /* GUARANTEE */
+    .guarantee { padding: 0 80px; margin-top: -8px; }
+    .guarantee-inner {
+      display: flex; align-items: flex-start; gap: 32px;
+      background: var(--warm); border: 1px solid var(--gold);
+      border-top: 3px solid var(--gold);
+      padding: 32px 40px; max-width: 900px; margin: 0 auto;
+    }
+    .guarantee-icon { flex-shrink: 0; margin-top: 4px; }
+    .guarantee-title {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 22px; font-weight: 500; color: var(--charcoal); margin-bottom: 8px;
+    }
+    .guarantee-text { font-size: 13px; line-height: 1.8; color: var(--mid); }
+
+    @media (max-width: 900px) {
+      .stat-cell { padding: 20px 12px; }
+      .stat-num { font-size: 36px; }
+      .guarantee { padding: 0 24px; }
+      .guarantee-inner { flex-direction: column; gap: 20px; padding: 24px; }
+    }
+    @media (max-width: 600px) {
+      section[aria-label="Book statistics"] > div { grid-template-columns: repeat(3,1fr); }
+      .stat-cell:nth-child(4), .stat-cell:nth-child(5) { border-top: 1px solid rgba(139,158,126,0.15); }
+    }
+
     /* ── SCROLL REVEAL ── */
     .reveal { opacity:0; transform:translateY(24px); transition:opacity 0.7s ease, transform 0.7s ease; }
     .reveal.visible { opacity:1; transform:translateY(0); }
@@ -575,6 +618,32 @@
     <span class="divider-mark">✦</span>
     <div class="divider-line"></div>
   </div>
+
+  <!-- STATS BAR -->
+  <section aria-label="Book statistics" style="background:var(--charcoal);padding:0;">
+    <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);border-left:1px solid rgba(139,158,126,0.15);">
+      <div class="stat-cell reveal">
+        <span class="stat-num">30</span>
+        <span class="stat-label">Days</span>
+      </div>
+      <div class="stat-cell reveal">
+        <span class="stat-num">10</span>
+        <span class="stat-label">Minutes a Day</span>
+      </div>
+      <div class="stat-cell reveal">
+        <span class="stat-num">84</span>
+        <span class="stat-label">Pages</span>
+      </div>
+      <div class="stat-cell reveal">
+        <span class="stat-num">4</span>
+        <span class="stat-label">Weeks / Phases</span>
+      </div>
+      <div class="stat-cell reveal">
+        <span class="stat-num">3</span>
+        <span class="stat-label">Formats Available</span>
+      </div>
+    </div>
+  </section>
 
   <!-- PROBLEM -->
   <section class="problem" aria-label="The problem this book solves">
@@ -825,7 +894,23 @@
         <p class="buy-desc">Read on any device. Instant download. Available on all Amazon Kindle apps.</p>
         <a href="https://www.amazon.com" class="buy-link outline" rel="noopener" target="_blank" aria-label="Buy Kindle eBook on Amazon for $8.99">Buy on Kindle →</a>
       </div>
+
+    <!-- GUARANTEE -->
+    <div class="guarantee reveal" aria-label="30-day money back guarantee">
+      <div class="guarantee-inner">
+        <div class="guarantee-icon" aria-hidden="true">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M24 4L6 12V24C6 33.94 14.06 43.28 24 46C33.94 43.28 42 33.94 42 24V12L24 4Z" stroke="#C4973A" stroke-width="1.5" fill="none"/>
+            <path d="M16 24L21 29L32 18" stroke="#C4973A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="guarantee-title">30-Day Full Refund Guarantee</h3>
+          <p class="guarantee-text">If you complete the first week of practices and do not feel a difference in your nervous system, contact us within 30 days for a complete refund. No questions asked. Your healing matters more than the sale.</p>
+        </div>
+      </div>
     </div>
+
   </section>
 
   <!-- AUTHOR -->
