@@ -1111,16 +1111,40 @@
     modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-    function handleContact(e) {
+    async function handleContact(e) {
       e.preventDefault();
       const btn = document.getElementById('contact-submit');
       btn.textContent = 'Sending...';
       btn.disabled = true;
-      setTimeout(() => {
-        document.getElementById('contact-form').querySelectorAll('input,textarea,select,button').forEach(el => el.style.display = 'none');
-        document.getElementById('contact-success').style.display = 'block';
-        setTimeout(closeModal, 3000);
-      }, 1000);
+
+      const name = document.getElementById('c-name').value.trim();
+      const email = document.getElementById('c-email').value.trim();
+      const subject = document.getElementById('c-subject').value;
+      const message = document.getElementById('c-message').value.trim();
+
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, subject, message })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          document.getElementById('contact-form').querySelectorAll('input,textarea,select,button').forEach(el => el.style.display = 'none');
+          document.getElementById('contact-success').style.display = 'block';
+          setTimeout(closeModal, 3000);
+        } else {
+          btn.textContent = 'Send Message';
+          btn.disabled = false;
+          alert(data.error || 'Something went wrong. Please try again.');
+        }
+      } catch (err) {
+        btn.textContent = 'Send Message';
+        btn.disabled = false;
+        alert('Something went wrong. Please try again.');
+      }
     }
 
     // Nav active state
